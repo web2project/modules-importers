@@ -1,0 +1,77 @@
+Copyright (c) 2004-2011 CaseySoftware, LLC <webmaster@caseysoftware.com>
+All rights reserved.
+
+This module is made available under the Clear BSD license:
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted (subject to the limitations in the
+disclaimer below) provided that the following conditions are met:
+
+ * Redistributions of source code must retain the above copyright
+   notice, this list of conditions and the following disclaimer.
+
+ * Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the
+   distribution.
+
+ * Neither the name of CaseySoftware, LLC nor the names of its
+   contributors may be used to endorse or promote products derived
+   from this software without specific prior written permission.
+
+NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE
+GRANTED BY THIS LICENSE.  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT
+HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
+WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
+IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+Source: http://labs.metacarta.com/license-explanation.html#license
+
+Special credit and acknowledgement goes to:
+
+- Former dotProject Development Team member and current web2project 
+Development Team member D. Keith Casey, Jr. <caseydk@users.sourceforge.net> 
+of CaseySoftware in cleaning up the code for the v3.x-4.x releases which are
+fully and completely compatible with web2project;
+
+- Alain Picard <http://www.benchmarkconsulting.com> for identifying some
+issues with the 3.2 release and sharing patches to resolve those;
+
+- Wellison da Rocha Pereira <Outsourcing programmer, B2ML Sistemas> for 
+implementing the functionaly to allow importing of WBS Gant Chart Pro 
+filetypes included in the v2.2 release;
+
+- Jean Dannemann, Lyle Albright <http://thomson.com>, and Jonathan Williams
+<http://schooltrends.net> all contributed feedback and/or test files which 
+helped resolve issues for the v1.5 release;
+
+- Alain Charles <http://irf.com> and James Feger for identifying an issue 
+introduced in the v1.5 release;
+
+- Michael Ford <http://proteus.com> for his numerous recommendations and 
+comments on general usability and improvements that went into v1.4;
+
+- Dennis Connolly <Dennis.Connolly@iee.lu> for his work in identifying issues 
+in the v1.3 release and recommending solutions for some of them;
+
+- Ben Sutherland <http://protoscape.com/> for his work in identifying issues 
+in the v1.3 release including the company selection and short username issues;
+
+- Thomas Zander <thomas-zander@arcor.de> for his work in cleaning up some of 
+the parsing mechanisms and generally improving the code quality for v1.1;
+
+- dotProject Development Team Member Ivan Peevski 
+<cyberhorse@users.sourceforge.net> for his work for CaseySoftware in making 
+the v1.0 happen;
+
+
+Microsoft Project is an application owned by Microsoft Corporation and is 
+referenced here exclusively to identify compatibility.  All Rights Reserved.
