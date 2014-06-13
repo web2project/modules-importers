@@ -14,7 +14,7 @@ class MSProjectImporter extends CImporter {
 	 *   so we could test it more easily.
 	 *   dkc - 15 April 2011
 	 */
-    public function import(CAppUI $AppUI, array $fields) {
+    public function import(w2p_Core_CAppUI $AppUI, array $fields) {
 
 		parent::_import($AppUI, $fields);
 
@@ -137,7 +137,7 @@ class MSProjectImporter extends CImporter {
         return true;
     }
 
-    public function view(CAppUI $AppUI) {
+    public function view(w2p_Core_CAppUI $AppUI) {
         $perms = $AppUI->acl();
 
         $output = '';

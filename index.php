@@ -7,10 +7,10 @@ if (!defined('W2P_BASE_DIR'))
 $canAuthor = canAdd('projects');
 
 if (!$canAuthor) {
-  $AppUI->redirect("m=public&a=access_denied");
+    $AppUI->redirect(ACCESS_DENIED);
 }
 
-$titleBlock = new CTitleBlock($AppUI->_('Project Importer'), 'projectimporter.png', $m, "$m.$a");
+$titleBlock = new w2p_Theme_TitleBlock('Project Importer', 'projectimporter.png', $m, "$m.$a");
 $titleBlock->show();
 
 //TODO: This message should be placed somewhere better without using echo.
