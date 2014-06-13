@@ -12,7 +12,7 @@ if (is_null($importer)) {
 	$AppUI->redirect('m=importers');
 }
 
-$titleBlock = new CTitleBlock($AppUI->_('Project Importer'), 'projectimporter.png', $m, "$m.$a");
+$titleBlock = new CTitleBlock('Project Importer', 'icon.png', $m, "$m.$a");
 $titleBlock->show();
 
 $AppUI->addFooterJavascriptFile('modules/importers/view.js');

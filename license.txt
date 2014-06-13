@@ -1,4 +1,4 @@
-Copyright (c) 2004-2011 CaseySoftware, LLC <webmaster@caseysoftware.com>
+Copyright (c) 2004-2014 CaseySoftware, LLC <webmaster@caseysoftware.com>
 All rights reserved.
 
 This module is made available under the Clear BSD license:
