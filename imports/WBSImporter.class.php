@@ -17,7 +17,7 @@ class WBSImporter extends CImporter {
 	 */
     public function import(w2p_Core_CAppUI $AppUI, array $fields) {
 
-		parent::_import($AppUI, $fields);
+		parent::_import($this->AppUI, $fields);
 
         $q = new w2p_Database_Query();
         // Users Setup
@@ -26,7 +26,7 @@ class WBSImporter extends CImporter {
                 $q->clear();
 
                 if (!empty($r['user_username'])) {
-                    $contact_id = (int) $this->_processContact($AppUI, $r['user_username'], $this->company_id);
+                    $contact_id = (int) $this->_processContact($this->AppUI, $r['user_username'], $this->company_id);
                     if ($contact_id) {
 //TODO:  Replace with the regular create users functionality
 						$q->addInsert('user_username', $r['user_username']);
@@ -38,7 +38,7 @@ class WBSImporter extends CImporter {
 						$r['user_id'] = $insert_id;
                     } else {
 //TODO:  This error message doesn't make it through..
-						$AppUI->setMsg($result, UI_MSG_ERROR);
+						$this->AppUI->setMsg($result, UI_MSG_ERROR);
 					}
                 } else {
                     $r['user_id'] = $r['user_userselect'];
@@ -51,10 +51,10 @@ class WBSImporter extends CImporter {
 
         // Tasks Setup
         foreach ($fields['tasks'] as $k => $task) {
-            $result = $this->_processTask($AppUI, $this->project_id, $task);
+            $result = $this->_processTask($this->AppUI, $this->project_id, $task);
             if (is_array($result)) {
-                $AppUI->setMsg($result, UI_MSG_ERROR);
-                $AppUI->redirect('m=importers');
+                $this->AppUI->setMsg($result, UI_MSG_ERROR);
+                $this->AppUI->redirect('m=importers');
             }
             $task_id = $result;
 
@@ -131,7 +131,7 @@ class WBSImporter extends CImporter {
 		 *   tried XMLReader but i've failed completely.
 		 *
 		 */
-        $perms = $AppUI->acl();
+        $perms = $this->AppUI->acl();
 
         $output = '';
         $data = $this->scrubbedData;
@@ -146,49 +146,49 @@ class WBSImporter extends CImporter {
         $output .= '
 			<table width="100%">
 			<tr>
-			<td align="right">' . $AppUI->_('Company Name') . ':</td>';
+			<td align="right">' . $this->AppUI->_('Company Name') . ':</td>';
 
 		$projectClass = new CProject();
-		$output .= $this->_createCompanySelection($AppUI, $tree['COMPANY']);
-		$output .= $this->_createProjectSelection($AppUI, $project_name);
+		$output .= $this->_createCompanySelection($this->AppUI, $tree['COMPANY']);
+		$output .= $this->_createProjectSelection($this->AppUI, $project_name);
 
 		$users = $perms->getPermittedUsers('projects');
-		$output .= '<tr><td align="right">' . $AppUI->_('Project Owner') . ':</td><td>';
-		$output .= arraySelect( $users, 'project_owner', 'size="1" style="width:200px;" class="text"', $AppUI->user_id );
+		$output .= '<tr><td align="right">' . $this->AppUI->_('Project Owner') . ':</td><td>';
+		$output .= arraySelect( $users, 'project_owner', 'size="1" style="width:200px;" class="text"', $this->AppUI->user_id );
 		$output .= '<td/></tr>';
 
 		$pstatus =  w2PgetSysVal( 'ProjectStatus' );
-		$output .= '<tr><td align="right">' . $AppUI->_('Project Status') . ':</td><td>';
+		$output .= '<tr><td align="right">' . $this->AppUI->_('Project Status') . ':</td><td>';
 		$output .= arraySelect( $pstatus, 'project_status', 'size="1" class="text"', $row->project_status, true );
 		$output .= '<td/></tr>';
 
-		$startDate = $this->_formatDate($AppUI, $reader->proj->summary['Start']);
-		$endDate = $this->_formatDate($AppUI, $reader->proj->summary['Finish']);
+		$startDate = $this->_formatDate($this->AppUI, $reader->proj->summary['Start']);
+		$endDate = $this->_formatDate($this->AppUI, $reader->proj->summary['Finish']);
 
 		$output .= '
             <tr>
-                <td align="right">' . $AppUI->_('Start Date') . ':</td>
+                <td align="right">' . $this->AppUI->_('Start Date') . ':</td>
                 <td>
 					<input type="hidden" name="project_start_date" value="'.$startDate.'" class="text" />
 					<input type="text" name="start_date" value="'.$reader->proj->summary['Start'].'" class="text" />
 				</td>
             </tr>
             <tr>
-                <td align="right">' . $AppUI->_('End Date') . ':</td>
+                <td align="right">' . $this->AppUI->_('End Date') . ':</td>
                 <td>
 					<input type="hidden" name="project_end_date" value="'.$endDate.'" class="text" />
 					<input type="text" name="end_date" value="'.$reader->proj->summary['Finish'].'" class="text" />
 				</td>
             </tr><!--
             <tr>
-                <td align="right">' . $AppUI->_('Do Not Import Users') . ':</td>
+                <td align="right">' . $this->AppUI->_('Do Not Import Users') . ':</td>
                 <td><input type="checkbox" name="nouserimport" value="true" onclick="ToggleUserFields()" /></td>
             </tr>
             <tr>
-                <td colspan="2">' . $AppUI->_('Users') . ':</td>
+                <td colspan="2">' . $this->AppUI->_('Users') . ':</td>
             </tr>
             <tr>
-                <td colspan="2"><div name="userRelated"><br /><em>'.$AppUI->_('userinfo').'</em></td>
+                <td colspan="2"><div name="userRelated"><br /><em>'.$this->AppUI->_('userinfo').'</em></td>
 			</tr>-->
 			<tr>
 				<td colspan="2"><table>';
@@ -212,19 +212,19 @@ class WBSImporter extends CImporter {
                 if (!empty($r['name'])) {
                     $output .= '
 						<tr>
-						<td>' . $AppUI->_('User name') . ': </td>
+						<td>' . $this->AppUI->_('User name') . ': </td>
 						<td>
 						<input type="text" name="users[' . $r['uid'] . '][user_username]" value="' . ucwords(strtolower($r['name'])) . '"' . (empty($r['LID'])?'':' readonly') . ' />
 						<input type="hidden" name="users[' . $r['uid'] . '][user_id]" value="' . $r['LID'] . '" />
-						(' . $AppUI->_('Resource UID').": ".$r['uid'] . ')';
+						(' . $this->AppUI->_('Resource UID').": ".$r['uid'] . ')';
 
                     if (function_exists('w2PUTF8strlen')) {
                         if (w2PUTF8strlen($r['name']) < w2PgetConfig('username_min_len')) {
-                            $output .= ' <em>' . $AppUI->_('username_min_len.') . '</em>';
+                            $output .= ' <em>' . $this->AppUI->_('username_min_len.') . '</em>';
                         }
                     } else {
                         if (strlen($r['name']) < w2PgetConfig('username_min_len')) {
-                            $output .= ' <em>' . $AppUI->_('username_min_len.') . '</em>';
+                            $output .= ' <em>' . $this->AppUI->_('username_min_len.') . '</em>';
                         }
                     }
                     $output .= '</td></tr>';
@@ -241,16 +241,16 @@ class WBSImporter extends CImporter {
 		// Insert Tasks
         $output .= '
             <tr>
-            <td colspan="2">' . $AppUI->_('Tasks') . ':</td>
+            <td colspan="2">' . $this->AppUI->_('Tasks') . ':</td>
             </tr>
             <tr>
             <td colspan="2">
             <table width="100%" class="tbl" cellspacing="1" cellpadding="2" border="0">
             <tr>
-            <th>' . $AppUI->_('Name') . '</th>
-            <th>' . $AppUI->_('Start Date') . '</th>
-            <th>' . $AppUI->_('End Date') . '</th>
-            <th>' . $AppUI->_('Assigned Users') . '</th>
+            <th>' . $this->AppUI->_('Name') . '</th>
+            <th>' . $this->AppUI->_('Start Date') . '</th>
+            <th>' . $this->AppUI->_('End Date') . '</th>
+            <th>' . $this->AppUI->_('Assigned Users') . '</th>
             </tr>';
 
         foreach($reader->proj->tasks->children() as $task) {
@@ -275,7 +275,7 @@ class WBSImporter extends CImporter {
 
                 $percentComplete = isset($task['PercentComplete']) ? $task['PercentComplete'] : 0;
                 $output .= '<input type="hidden" name="tasks['.$k.'][task_percent_complete]" value="' . $percentComplete . '" />';
-                $output .= '<input type="hidden" name="tasks['.$k.'][task_owner]" value="'.$AppUI->user_id.'" />';
+                $output .= '<input type="hidden" name="tasks['.$k.'][task_owner]" value="'.$this->AppUI->user_id.'" />';
                 $output .= '<input type="hidden" name="tasks['.$k.'][task_type]" value="0" />';
 
                 $milestone = ($task['Milestone'] == 'yes') ? 1 : 0;
@@ -360,7 +360,7 @@ class WBSImporter extends CImporter {
         $endNodes = "</proj></project>";
 
         if (substr_count($filedata, '<resources>') < 1) {
-            echo "<b>".$AppUI->_("Failure")."</b> ".$AppUI->_("impinfo")."<BR>";
+            echo "<b>".$this->AppUI->_("Failure")."</b> ".$this->AppUI->_("impinfo")."<BR>";
             $filedata=$header.$summaryNode.$taskNodes.$endNodes;
             $user_control=false;
         } else {

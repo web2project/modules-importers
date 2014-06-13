@@ -14,7 +14,7 @@ switch($action) {
 		}
 
 		$fileext = substr($_FILES['upload_file']['name'], -4);
-		$importer = CImporter::resolveFiletype($fileext);
+		$importer = CImporter::resolveFiletype($fileext, $AppUI);
 
 		if (is_a($importer, 'stdClass')) {
 			$AppUI->setMsg('Failure: '.$AppUI->_($importer->error), UI_MSG_ERROR, true);
