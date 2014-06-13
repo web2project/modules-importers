@@ -17,7 +17,7 @@ $titleBlock->show();
 
 $AppUI->addFooterJavascriptFile('modules/importers/view.js');
 ?>
-<form name="preForm" action="?m=importers" method="post">
+<form name="preForm" action="?m=importers" method="post" accept-charset="utf-8">
 	<input type="hidden" name="action" value="save">
 	<input type="hidden" name="dosql" value="do_importer_aed" />
 	<input type="hidden" name="filetype" value="<? echo $importer->fileType;?>">
