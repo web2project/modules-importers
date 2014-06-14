@@ -142,12 +142,13 @@ class MSProjectImporter extends CImporter {
 
         $output = '';
         $data = $this->scrubbedData;
+        $data = str_replace('& ', '&amp; ', $data);
 
 		$xml = simplexml_load_string($data);
         $tree = xmlParse($data);
         $i = ((int) $tree[0]['children'][0]['cdata']) ? 1 : 0;
 
-        $project_name = str_replace('.xml', '', $tree[0]['children'][$i]['cdata']);
+        $project_name = $xml->Title;
         $tree = rebuildTree($tree);
         $tree = $tree['PROJECT'][0];
 
@@ -157,7 +158,7 @@ class MSProjectImporter extends CImporter {
             <td align="right">' . $this->AppUI->_('Company Name') . ':</td>';
 
 
-        $output .= $this->_createCompanySelection($this->AppUI, $tree['COMPANY']);
+        $output .= $this->_createCompanySelection($this->AppUI, $xml->Company);
         $output .= $this->_createProjectSelection($this->AppUI, $project_name);
 
         $users = $perms->getPermittedUsers('projects');
@@ -366,10 +367,6 @@ class MSProjectImporter extends CImporter {
         $file = fopen($filename, "r");
         $this->scrubbedData = fread($file, $fileArray['upload_file']['size']);
         fclose($file);
-
-        if (substr_count($this->scrubbedData, '<Resource>') <= 1) {
-            $this->notices[] = $this->AppUI->_("impinfo");
-        }
 
         return true;
     }
