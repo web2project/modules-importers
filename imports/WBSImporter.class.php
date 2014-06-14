@@ -344,8 +344,7 @@ class WBSImporter extends CImporter {
 
     public function loadFile($AppUI) {
         $filename = $_FILES['upload_file']['tmp_name'];
-        $pos=strrpos($_FILES['upload_file']['name'],".");
-        $fileName=substr($_FILES['upload_file']['name'],0,$pos);
+
         $file = fopen($filename, "r");
         $filedata = fread($file, $_FILES['upload_file']['size']);
         fclose($file);
@@ -362,11 +361,9 @@ class WBSImporter extends CImporter {
         if (substr_count($filedata, '<resources>') < 1) {
             echo "<b>".$this->AppUI->_("Failure")."</b> ".$this->AppUI->_("impinfo")."<BR>";
             $filedata=$header.$summaryNode.$taskNodes.$endNodes;
-            $user_control=false;
         } else {
             $userNodes=$this->stripper("<resources>","</resources>",$filedata);
             $filedata=$header.$summaryNode.$userNodes.$taskNodes.$endNodes;
-            $user_control=true;
         }
         /*
          * O resultado esperado Ã© esse:
@@ -388,7 +385,6 @@ class WBSImporter extends CImporter {
          */
 
         $this->scrubbedData = $filedata;
-        $this->proName=$fileName;
         return true;
     }
     /* Extrai uma determinada tag xml de uma string que com

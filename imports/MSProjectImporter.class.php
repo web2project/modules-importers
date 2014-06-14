@@ -362,8 +362,6 @@ class MSProjectImporter extends CImporter {
 
     public function loadFile($AppUI, $fileArray) {
 		$filename = $fileArray['upload_file']['tmp_name'];
-        $pos = strrpos($fileArray['upload_file']['name'],".");
-        $fileName = substr($fileArray['upload_file']['name'],0,$pos);
 
         $file = fopen($filename, "r");
         $this->scrubbedData = fread($file, $fileArray['upload_file']['size']);
@@ -373,7 +371,6 @@ class MSProjectImporter extends CImporter {
             $this->notices[] = $this->AppUI->_("impinfo");
         }
 
-        $this->proName = $fileName;
         return true;
     }
 
