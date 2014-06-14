@@ -6,6 +6,7 @@ if (!defined('W2P_BASE_DIR')){
 class CImporter
 {
     protected $AppUI = null;
+    protected $company_id = 0;
 
     public $fileType = '';
     public $importType='';
@@ -17,7 +18,7 @@ class CImporter
     protected $proName='';
     protected $user_control='';
 
-    public function __construct(w2p_Core_CAppUI $AppUI)
+    public function __construct(w2p_Core_CAppUI $AppUI = null)
     {
         $this->AppUI = $AppUI;
     }
@@ -79,14 +80,13 @@ class CImporter
             $this->company_id = $company->company_id;
         }
 
-        $result = $this->_processProject($AppUI, $this->company_id, $fields);
+        $project = $this->_processProject($AppUI, $this->company_id, $fields);
 
-        if (is_array($result)) {
-            $this->AppUI->setMsg($result, UI_MSG_ERROR);
-//TODO: this should probably delete the project and/or company.. just in case
+        if (!$project->project_id) {
+            $this->AppUI->setMsg($project->getError(), UI_MSG_ERROR);
             $this->AppUI->redirect('m=importers');
         }
-        $this->project_id = $result;
+        $this->project_id = $project->project_id;
 	}
 
     protected function _createCompanySelection(w2p_Core_CAppUI $AppUI, $companyInput) {
@@ -116,7 +116,7 @@ class CImporter
         $project_id = $q->loadResult();
 
         $output .= '<td>';
-        $output .= '<input type="text" name="new_project" value="' . $project_name . '" size="36" class="text" />';
+        $output .= '<input type="text" name="project_name" value="' . $project_name . '" size="36" class="text" />';
         if ($project_id) {
             $output .= '<input type="hidden" name="project_id" value="' . $project_id . '" />';
             $output .= $this->AppUI->_('pexist') ;
@@ -203,31 +203,14 @@ class CImporter
 
     protected function _processProject(w2p_Core_CAppUI $AppUI, $company_id, $projectInfo)
     {
-
-        $projectName = w2PgetParam( $projectInfo, 'new_project', 'New Project' );
-        $projectStartDate = w2PgetParam( $projectInfo, 'project_start_date', 'New Project' );
-        $projectEndDate = w2PgetParam( $projectInfo, 'project_end_date', 'New Project' );
-        $projectOwner = w2PgetParam( $projectInfo, 'project_owner', $this->AppUI->user_id );
-        $projectStatus = w2PgetParam( $projectInfo, 'project_status', 0 );
-
+        unset($projectInfo['project_id']);
         $project = new CProject;
-        $project->project_name = $projectName;
-        $project->project_short_name = substr($projectName, 0, 8);
-        $project->project_company = $company_id;
-        $project->project_start_date = $this->AppUI->convertToSystemTZ($projectStartDate);
-        $project->project_end_date = $this->AppUI->convertToSystemTZ($projectEndDate);
-        $project->project_owner = $projectOwner;
-        $project->project_creator = $this->AppUI->user_id;
-        $project->project_status = $projectStatus;
-        $project->project_active = 1;
-        $project->project_priority = '0';
-        $project->project_type = '0';
+        $project->bind($projectInfo);
+        $project->project_company = $this->company_id;
         $project->project_color_identifier = 'FFFFFF';
-        $project->project_parent = null;
-        $project->project_original_parent = null;
-        $result = $project->store($this->AppUI);
+        $project->store();
 
-        return (is_array($result)) ? $result : $project->project_id;
+        return $project;
     }
 
 	protected function _formatDate($notUsed, $dateString) {
