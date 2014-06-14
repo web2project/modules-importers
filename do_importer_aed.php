@@ -26,7 +26,7 @@ switch($action) {
 		$AppUI->redirect('m=importers&a=view');
 		break;
 	case 'save':
-        $importer = CImporter::resolveFiletype($_POST['filetype']);
+        $importer = CImporter::resolveFiletype($_POST['filetype'], $AppUI);
 
 //TODO: this branch still has to be cleaned up
         $importer->import($AppUI, $_POST);
