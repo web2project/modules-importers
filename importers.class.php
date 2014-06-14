@@ -70,28 +70,17 @@ class CImporter
 	 */
 	protected function _import(w2p_Core_CAppUI $AppUI, array $fields)
     {
+        $this->company_id = (int) w2PgetParam($fields, 'company_id', $AppUI->user_company);
 
-        $this->company_id = (int) w2PgetParam($fields, 'company_id', 0);
-        if ($this->company_id == 0) {
-            if (isset($fields['new_company'])) {
-                $companyName = w2PgetParam( $fields, 'new_company', 'New Company');
-                $company = new CCompany();
-                $company->company_name = $companyName;
-                $company->company_owner = $this->AppUI->user_id;
-                $company->store($this->AppUI);
-                $this->company_id = $company->company_id;
-
-                //$output .= $this->AppUI->_('createcomp'). $companyName . '<br>';
-//TODO: replace this echo with a good status message
-                //echo $output;
-            } else {
-                $error = $this->AppUI->_('emptycomp');
-//TODO: process this error correctly
-                //return $error;
-            }
+        if (!$fields['company_id'] && '' != $fields['company_name']) {
+            $company = new CCompany();
+            $company->bind($fields);
+            $company->store();
+            $this->company_id = $company->company_id;
         }
 
         $result = $this->_processProject($AppUI, $this->company_id, $fields);
+
         if (is_array($result)) {
             $this->AppUI->setMsg($result, UI_MSG_ERROR);
 //TODO: this should probably delete the project and/or company.. just in case
@@ -108,8 +97,8 @@ class CImporter
         $companies = arrayMerge(array('0' => $this->AppUI->_('Add New Company')), $companies);
 
         $output .= '<td>' .
-            arraySelect($companies, 'company_id', 'class="text" size="1" onChange=this.form.new_company.value=\'\'', $company_id) .
-            '<input type="text" name="new_company" value="' . (($company_id > 0) ? '' : $companyInput) . '" class="text" />';
+            arraySelect($companies, 'company_id', 'class="text" size="1" onChange=this.form.company_name.value=\'\'', $company_id) .
+            '<input type="text" name="company_name" value="' . (($company_id > 0) ? '' : $companyInput) . '" class="text" />';
         if ($company_id == 0) {
             $output .= '<br /><em>'.$this->AppUI->_('compinfo').'</em>';
         }
@@ -212,7 +201,8 @@ class CImporter
         return (is_array($result)) ? $result : $myTask->task_id;
     }
 
-    protected function _processProject(w2p_Core_CAppUI $AppUI, $company_id, $projectInfo) {
+    protected function _processProject(w2p_Core_CAppUI $AppUI, $company_id, $projectInfo)
+    {
 
         $projectName = w2PgetParam( $projectInfo, 'new_project', 'New Project' );
         $projectStartDate = w2PgetParam( $projectInfo, 'project_start_date', 'New Project' );
