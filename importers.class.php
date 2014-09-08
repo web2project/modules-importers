@@ -184,9 +184,9 @@ class CImporter
 
     protected function _processTask(w2p_Core_CAppUI $AppUI, $project_id, $task) {
         $myTask = new CTask;
-        $myTask->task_name = w2PgetCleanParam($task, 'task_name', null);
+        $myTask->task_name = w2PgetParam($task, 'task_name', null);
         $myTask->task_project = $project_id;
-        $myTask->task_description = w2PgetCleanParam($task, 'task_description', '');
+        $myTask->task_description = w2PgetParam($task, 'task_description', '');
         $myTask->task_start_date = $this->AppUI->convertToSystemTZ($task['task_start_date']);
 		$myTask->task_end_date = $this->AppUI->convertToSystemTZ($task['task_end_date']);
         $myTask->task_duration = $task['task_duration'];

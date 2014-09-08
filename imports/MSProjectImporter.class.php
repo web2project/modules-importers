@@ -113,8 +113,10 @@ class MSProjectImporter extends CImporter {
             // Task Dependencies
 //TODO:  Replace with the regular dependency handling
             if (isset($task['dependencies']) && is_array($task['dependencies'])) {
-                $sql = "DELETE FROM task_dependencies WHERE dependencies_task_id = $task_id";
-                db_exec($sql);
+                $q->clear();
+                $q->setDelete('task_dependencies');
+                $q->addWhere('dependencies_task_id = ' . (int) $task_id);
+                $q->exec();
                 $dependencyArray = array();
 
                 foreach($task['dependencies'] as $task_uid) {
