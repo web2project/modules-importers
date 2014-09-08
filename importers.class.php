@@ -207,6 +207,7 @@ class CImporter
         $project = new CProject;
         $project->bind($projectInfo);
         $project->project_company = $this->company_id;
+        $project->project_active = 1;
         $project->project_color_identifier = 'FFFFFF';
         $project->store();
 
