@@ -28,13 +28,13 @@ class MSProjectImporter extends CImporter {
                     $contact_id = (int) $this->_processContact($this->AppUI, $r['user_username'], $this->company_id);
                     if ($contact_id) {
 //TODO:  Replace with the regular create users functionality
-						$q->addInsert('user_username', $r['user_username']);
-						$q->addInsert('user_contact', $contact_id);
-						$q->addTable('users');
-						$q->exec();
-						$insert_id = db_insert_id();
+                        $user = new CUser();
+                        $user->user_username = $r['user_username'];
+                        $user->user_contact = (int) $contact_id;
+                        $user->user_password = rand(0, 100) . time();
+                        $user->store();
 
-						$r['user_id'] = $insert_id;
+						$r['user_id'] = $user->user_id;
                     } else {
 //TODO:  This error message doesn't make it through..
 						$this->AppUI->setMsg($result, UI_MSG_ERROR);
