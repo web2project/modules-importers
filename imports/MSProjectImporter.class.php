@@ -50,6 +50,14 @@ class MSProjectImporter extends CImporter {
 
         // Tasks Setup
         foreach ($fields['tasks'] as $k => $task) {
+        	if($task["task_milestone"]==1)
+			{
+        		$startTimestamp = strtotime($task["task_start_date"]);
+                $endTimestamp = strtotime($task["task_end_date"]);
+				 if ($startTimestamp > $endTimestamp) {
+				 	$task["task_end_date"] = $task["task_start_date"];
+				 }
+			}
             $result = $this->_processTask($this->AppUI, $this->project_id, $task);
             if (is_array($result)) {
                 $this->AppUI->setMsg($result, UI_MSG_ERROR);
